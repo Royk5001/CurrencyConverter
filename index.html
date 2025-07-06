@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>다국적 환율 계산기</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    input, select, button {
+      font-size: 16px;
+      padding: 8px;
+      margin: 5px;
+    }
+    h1 {
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>다국적 환율 계산기</h1>
+
+  <input type="number" id="amount" placeholder="금액 입력"><br>
+
+  <label>From:</label>
+  <select id="fromCurrency"></select>
+
+  <label>To:</label>
+  <select id="toCurrency"></select><br>
+
+  <button onclick="convert()">변환</button>
+
+  <h2 id="result"></h2>
+
+  <script>
+    const ratesToKRW = {
+      'KRW': 1.0,
+      'USD': 1370.0,
+      'EUR': 1470.0,
+      'JPY': 9.1,
+      'CNY': 190.0,
+      'GBP': 1700.0,
+      'AUD': 910.0,
+      'CAD': 950.0,
+      'CHF': 1560.0,
+      'SGD': 1010.0,
+      'THB': 38.0,
+      'VND': 0.056,
+      'PHP': 24.0,
+      'IDR': 0.088,
+      'INR': 16.5,
+      'HKD': 175.0
+    };
+
+    const fromSelect = document.getElementById("fromCurrency");
+    const toSelect = document.getElementById("toCurrency");
+
+    for (let code in ratesToKRW) {
+      fromSelect.innerHTML += `<option value="${code}">${code}</option>`;
+      toSelect.innerHTML += `<option value="${code}">${code}</option>`;
+    }
+
+    function convert() {
+      const amount = parseFloat(document.getElementById("amount").value);
+      const from = fromSelect.value;
+      const to = toSelect.value;
+
+      if (!from || !to || isNaN(amount)) {
+        document.getElementById("result").innerText = "모든 값을 올바르게 입력해주세요.";
+        return;
+      }
+
+      const krwAmount = amount * ratesToKRW[from];
+      const converted = krwAmount / ratesToKRW[to];
+      document.getElementById("result").innerText =
+        `${amount.toFixed(2)} ${from} → ${converted.toFixed(2)} ${to}`;
+    }
+  </script>
+</body>
+</html>
